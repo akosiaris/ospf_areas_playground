@@ -67,6 +67,29 @@ services:
       - backbone6-backbone1
       - backbone5-backbone6
 
+  # Deadend normal area section
+  deadendnormal1:
+    cap_add:
+      - NET_ADMIN
+    image: pierky/bird:1.6.6
+    volumes:
+      - type: bind
+        source: ./deadendnormal1
+        target: /etc/bird
+    networks:
+      - deadendnormal1-backbone1
+      - deadendnormal1-deadendnormal2
+  deadendnormal2:
+    cap_add:
+      - NET_ADMIN
+    image: pierky/bird:1.6.6
+    volumes:
+      - type: bind
+        source: ./deadendnormal2
+        target: /etc/bird
+    networks:
+      - deadendnormal1-deadendnormal2
+
 networks:
   backbone1-backbone2:
   backbone2-backbone3:
@@ -74,3 +97,7 @@ networks:
   backbone4-backbone5:
   backbone5-backbone6:
   backbone6-backbone1:
+
+  # Links for backbone to deadend normal area
+  deadendnormal1-backbone1:
+  deadendnormal1-deadendnormal2:
