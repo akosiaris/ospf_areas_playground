@@ -21,8 +21,8 @@ services:
         source: ./backbone2
         target: /etc/bird
     networks:
-      - backbone2-backbone3
       - backbone1-backbone2
+      - backbone2-backbone3
       - asbrnormal1-backbone2
   backbone3:
     image: pierky/bird:1.6.6
@@ -33,8 +33,8 @@ services:
         source: ./backbone3
         target: /etc/bird
     networks:
-      - backbone3-backbone4
       - backbone2-backbone3
+      - backbone3-backbone4
   backbone4:
     image: pierky/bird:1.6.6
     cap_add:
@@ -44,8 +44,8 @@ services:
         source: ./backbone4
         target: /etc/bird
     networks:
-      - backbone4-backbone5
       - backbone3-backbone4
+      - backbone4-backbone5
   backbone5:
     image: pierky/bird:1.6.6
     cap_add:
@@ -55,8 +55,8 @@ services:
         source: ./backbone5
         target: /etc/bird
     networks:
-      - backbone5-backbone6
       - backbone4-backbone5
+      - backbone5-backbone6
   backbone6:
     cap_add:
       - NET_ADMIN
@@ -66,8 +66,8 @@ services:
         source: ./backbone6
         target: /etc/bird
     networks:
-      - backbone6-backbone1
       - backbone5-backbone6
+      - backbone6-backbone1
 
   # Deadend normal area section
   deadendnormal1:
@@ -117,16 +117,46 @@ services:
 
 networks:
   backbone1-backbone2:
+    ipam:
+      config:
+        - subnet: 172.20.1.0/24
   backbone2-backbone3:
+    ipam:
+      config:
+        - subnet: 172.20.2.0/24
   backbone3-backbone4:
+    ipam:
+      config:
+        - subnet: 172.20.3.0/24
   backbone4-backbone5:
+    ipam:
+      config:
+        - subnet: 172.20.4.0/24
   backbone5-backbone6:
+    ipam:
+      config:
+        - subnet: 172.20.5.0/24
   backbone6-backbone1:
+    ipam:
+      config:
+        - subnet: 172.20.6.0/24
 
   # Links for backbone to deadend normal area
   deadendnormal1-backbone1:
+    ipam:
+      config:
+        - subnet: 172.20.7.0/24
   deadendnormal1-deadendnormal2:
+    ipam:
+      config:
+        - subnet: 172.20.8.0/24
 
   # Links for backbone to ASBR connected normal area
   asbrnormal1-backbone2:
+    ipam:
+      config:
+        - subnet: 172.20.9.0/24
   asbrnormal1-asbrnormal2:
+    ipam:
+      config:
+        - subnet: 172.20.10.0/24
