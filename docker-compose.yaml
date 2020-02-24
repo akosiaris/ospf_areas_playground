@@ -9,8 +9,8 @@ services:
         source: ./backbone1
         target: /etc/bird
     networks:
-      - backbone1-2
-      - backbone6-1
+      - backbone1-backbone2
+      - backbone6-backbone1
   backbone2:
     image: pierky/bird:1.6.6
     cap_add:
@@ -20,8 +20,8 @@ services:
         source: ./backbone2
         target: /etc/bird
     networks:
-      - backbone2-3
-      - backbone1-2
+      - backbone2-backbone3
+      - backbone1-backbone2
   backbone3:
     image: pierky/bird:1.6.6
     cap_add:
@@ -31,8 +31,8 @@ services:
         source: ./backbone3
         target: /etc/bird
     networks:
-      - backbone3-4
-      - backbone2-3
+      - backbone3-backbone4
+      - backbone2-backbone3
   backbone4:
     image: pierky/bird:1.6.6
     cap_add:
@@ -42,8 +42,8 @@ services:
         source: ./backbone4
         target: /etc/bird
     networks:
-      - backbone4-5
-      - backbone3-4
+      - backbone4-backbone5
+      - backbone3-backbone4
   backbone5:
     image: pierky/bird:1.6.6
     cap_add:
@@ -53,8 +53,8 @@ services:
         source: ./backbone5
         target: /etc/bird
     networks:
-      - backbone5-6
-      - backbone4-5
+      - backbone5-backbone6
+      - backbone4-backbone5
   backbone6:
     cap_add:
       - NET_ADMIN
@@ -64,13 +64,13 @@ services:
         source: ./backbone6
         target: /etc/bird
     networks:
-      - backbone6-1
-      - backbone5-6
+      - backbone6-backbone1
+      - backbone5-backbone6
 
 networks:
-  backbone1-2:
-  backbone2-3:
-  backbone3-4:
-  backbone4-5:
-  backbone5-6:
-  backbone6-1:
+  backbone1-backbone2:
+  backbone2-backbone3:
+  backbone3-backbone4:
+  backbone4-backbone5:
+  backbone5-backbone6:
+  backbone6-backbone1:
