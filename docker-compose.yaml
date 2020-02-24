@@ -23,6 +23,7 @@ services:
     networks:
       - backbone2-backbone3
       - backbone1-backbone2
+      - asbrnormal1-backbone2
   backbone3:
     image: pierky/bird:1.6.6
     cap_add:
@@ -91,6 +92,29 @@ services:
     networks:
       - deadendnormal1-deadendnormal2
 
+  # normal area with an ASBR section
+  asbrnormal1:
+    cap_add:
+      - NET_ADMIN
+    image: pierky/bird:1.6.6
+    volumes:
+      - type: bind
+        source: ./asbrnormal1
+        target: /etc/bird
+    networks:
+      - asbrnormal1-backbone2
+      - asbrnormal1-asbrnormal2
+  asbrnormal2:
+    cap_add:
+      - NET_ADMIN
+    image: pierky/bird:1.6.6
+    volumes:
+      - type: bind
+        source: ./asbrnormal2
+        target: /etc/bird
+    networks:
+      - asbrnormal1-asbrnormal2
+
 networks:
   backbone1-backbone2:
   backbone2-backbone3:
@@ -102,3 +126,7 @@ networks:
   # Links for backbone to deadend normal area
   deadendnormal1-backbone1:
   deadendnormal1-deadendnormal2:
+
+  # Links for backbone to ASBR connected normal area
+  asbrnormal1-backbone2:
+  asbrnormal1-asbrnormal2:
