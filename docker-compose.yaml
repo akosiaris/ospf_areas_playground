@@ -35,6 +35,7 @@ services:
     networks:
       - backbone2-backbone3
       - backbone3-backbone4
+      - z_stub1-backbone3
   backbone4:
     image: pierky/bird:1.6.6
     cap_add:
@@ -115,6 +116,30 @@ services:
     networks:
       - asbrnormal1-asbrnormal2
 
+  # stub area. ASBR is disallowed anyway
+  stub1:
+    cap_add:
+      - NET_ADMIN
+    image: pierky/bird:1.6.6
+    volumes:
+      - type: bind
+        source: ./stub1
+        target: /etc/bird
+    networks:
+      - stub1-stub2
+      - z_stub1-backbone3
+  stub2:
+    cap_add:
+      - NET_ADMIN
+    image: pierky/bird:1.6.6
+    volumes:
+      - type: bind
+        source: ./stub2
+        target: /etc/bird
+    networks:
+      - stub1-stub2
+
+
 networks:
   backbone1-backbone2:
     ipam:
@@ -141,7 +166,7 @@ networks:
       config:
         - subnet: 172.20.6.0/24
 
-  # Links for backbone to deadend normal area
+  # Links for deadend normal area
   deadendnormal1-backbone1:
     ipam:
       config:
@@ -151,7 +176,7 @@ networks:
       config:
         - subnet: 172.20.8.0/24
 
-  # Links for backbone to ASBR connected normal area
+  # Links for ASBR connected normal area
   z_asbrnormal1-backbone2:
     ipam:
       config:
@@ -160,3 +185,13 @@ networks:
     ipam:
       config:
         - subnet: 172.20.10.0/24
+
+  # Links for stub area
+  z_stub1-backbone3:
+    ipam:
+      config:
+        - subnet: 172.20.11.0/24
+  stub1-stub2:
+    ipam:
+      config:
+        - subnet: 172.20.12.0/24
