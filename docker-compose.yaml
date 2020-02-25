@@ -23,7 +23,7 @@ services:
     networks:
       - backbone1-backbone2
       - backbone2-backbone3
-      - asbrnormal1-backbone2
+      - z_asbrnormal1-backbone2 # Don't ask about the z_ prefix, it's all about alphabetical ordering
   backbone3:
     image: pierky/bird:1.6.6
     cap_add:
@@ -102,7 +102,7 @@ services:
         source: ./asbrnormal1
         target: /etc/bird
     networks:
-      - asbrnormal1-backbone2
+      - z_asbrnormal1-backbone2
       - asbrnormal1-asbrnormal2
   asbrnormal2:
     cap_add:
@@ -152,7 +152,7 @@ networks:
         - subnet: 172.20.8.0/24
 
   # Links for backbone to ASBR connected normal area
-  asbrnormal1-backbone2:
+  z_asbrnormal1-backbone2:
     ipam:
       config:
         - subnet: 172.20.9.0/24
