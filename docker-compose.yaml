@@ -47,6 +47,7 @@ services:
     networks:
       - backbone3-backbone4
       - backbone4-backbone5
+      - z_totallystubby1-backbone4
   backbone5:
     image: pierky/bird:1.6.6
     cap_add:
@@ -139,6 +140,29 @@ services:
     networks:
       - stub1-stub2
 
+  # totally stubby (no LSA Type 3 summary) area. ASBR is disallowed anyway
+  totallystubby1:
+    cap_add:
+      - NET_ADMIN
+    image: pierky/bird:1.6.6
+    volumes:
+      - type: bind
+        source: ./totallystubby1
+        target: /etc/bird
+    networks:
+      - totallystubby1-totallystubby2
+      - z_totallystubby1-backbone4
+  totallystubby2:
+    cap_add:
+      - NET_ADMIN
+    image: pierky/bird:1.6.6
+    volumes:
+      - type: bind
+        source: ./totallystubby2
+        target: /etc/bird
+    networks:
+      - totallystubby1-totallystubby2
+
 
 networks:
   backbone1-backbone2:
@@ -195,3 +219,13 @@ networks:
     ipam:
       config:
         - subnet: 172.20.12.0/24
+
+  # Links for totally stubby area
+  z_totallystubby1-backbone4:
+    ipam:
+      config:
+        - subnet: 172.20.13.0/24
+  totallystubby1-totallystubby2:
+    ipam:
+      config:
+        - subnet: 172.20.14.0/24
